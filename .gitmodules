@@ -1,8 +1,0 @@
-[submodule "frontend"]
-	path = frontend
-	url = https://github.com/pcg0610/ourhome-frontend.git
-	branch = main
-[submodule "backend"]
-	path = backend
-	url = https://github.com/pcg0610/ourhome-backend.git
-	branch = master
