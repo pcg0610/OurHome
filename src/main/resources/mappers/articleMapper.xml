@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ourhome.article.dao.ArticleDao">
+	<!-- 게시글 추가 -->
+	<insert id="writeArticle" parameterType="ArticleEntity">
+		INSERT INTO post (user_id, home_id, title, content)
+		VALUES (#{userId}, #{homeId}, #{title}, #{content})
+	</insert>
+	
+	<!-- home ID와 일치하는 게시글을 불러온다. -->
+	<select id="getArticleListByHome">
+		SELECT * FROM post WHERE home_id = #{homeId}
+	</select>
+	
+	<!-- user ID와 일치하는 게시글 목록을 불러온다. -->
+	<select id="getArticleListById">
+		SELECt * FROM post WHERE user_id = #{userId}
+	</select>
+	
+	<!-- article ID와 userID가 일치하는 게시글을 삭제한다. -->
+	<delete id="removeArticle">
+		DELETE FROM post WHERE id = #{id}
+	</delete>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateArticle">
+		UPDATE post SET title = #{title}, content = #{content}, registered_date = #{registeredDate}
+		WHERE user_id = #{userId} AND home_id = #{homeId} AND id = #{id}
+	</update>
+</mapper>

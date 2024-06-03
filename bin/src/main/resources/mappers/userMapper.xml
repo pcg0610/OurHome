@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ourhome.auth.dao.UserDao">
+	<!-- 회원 가입 -->
+	<insert id="insertUser">
+		INSERT INTO user (user_id, password, name, birth, gender)
+		VALUES (#{userId}, #{password}, #{name}, #{birth}, #{gender})
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="selectUser" resultType="User" parameterType="String">
+		SELECT * FROM user
+		WHERE user_id = #{userId} AND password = #{password}
+	</select>
+	
+	<select id="getUserID">
+		SELECT COUNT(*) FROM user
+		WHERE user_id = #{userId}
+	</select>
+	
+	<!-- 토큰 추가 -->
+	<insert id="insertToken" parameterType="TokenEntity">
+		INSERT INTO user_token (user_id, token, valid, expiration)
+		VALUES (#{userId}, #{hashedToken}, 1, #{expirationDate})
+	</insert>
+	
+	<select id="checkValidToken" parameterType="String">
+		SELECT COUNT(*) FROM user_token
+		WHERE token = #{hashedToken} AND valid = 1
+	</select>
+	
+	<!-- 기존에 유효한 토큰 중 refresh token을 제외한 나머지 토큰을 비활성화 -->
+	<update id="setInvalid">
+		UPDATE user_token SET valid = 0
+		WHERE user_id = #{userId} AND valid = 1 AND token != #{hashedToken}
+	</update>
+	
+	<select id="getUserById">
+		SELECT * FROM user
+		WHERE user_id = #{userId}
+	</select>
+	
+</mapper>
